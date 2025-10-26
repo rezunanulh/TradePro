@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradePro Mobile</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #475569;
+            --accent-color: #10b981;
+            --danger-color: #ef4444;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --gray-color: #e2e8f0;
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 15px;
+            margin: 0 auto;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .portfolio-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .portfolio-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .portfolio-change {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .positive {
+            color: var(--accent-color);
+        }
+
+        .negative {
+            color: var(--danger-color);
+        }
+
+        .portfolio-swiper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 15px;
+            padding-bottom: 15px;
+            scrollbar-width: none;
+        }
+
+        .portfolio-swiper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .portfolio-item {
+            flex: 0 0 auto;
+            width: 85%;
+            scroll-snap-align: start;
+            background: var(--gray-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+        }
+
+        .portfolio-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .portfolio-item .stock-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .tab-navigation {
+            display: flex;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: var(--secondary-color);
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .time-btn {
+            padding: 5px 10px;
+            border: none;
+            background: var(--gray-color);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .time-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .news-section {
+            margin-bottom: 70px;
+        }
+
+        .news-item {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .news-source {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        .news-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .news-snippet {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .news-time {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        .trade-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1rem;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .trade-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            border-radius: 20px 20px 0 0;
+            padding: 25px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .trade-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-input, .form-select {
+            padding: 12px;
+            border: 1px solid var(--gray-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .trade-type {
+            display: flex;
+            gap: 10px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--gray-color);
+            border-radius: var(--border-radius);
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .type-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .submit-trade {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* Alert styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            background: var(--dark-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">TradePro</div>
+            <div class="user-info">
+                <div class="user-avatar">JS</div>
+            </div>
+        </div>
+
+        <div class="portfolio-card">
+            <div class="portfolio-header">
+                <div class="portfolio-title">Your Portfolio</div>
+            </div>
+            <div class="portfolio-value">$24,856.78</div>
+            <div class="portfolio-change positive">
+                +$867.32 (3.61%) <span style="margin-left: 5px;">today</span>
+            </div>
+            
+            <div class="portfolio-swiper">
+                <div class="portfolio-item">
+                    <h3>AAPL</h3>
+                    <div>Apple Inc.</div>
+                    <div class="stock-price">$172.43</div>
+                    <div class="portfolio-change positive">+1.8%</div>
+                    <div>12 shares</div>
+                </div>
+                <div class="portfolio-item">
+                    <h3>MSFT</h3>
+                    <div>Microsoft Corporation</div>
+                    <div class="stock-price">$417.88</div>
+                    <div class="portfolio-change positive">+0.5%</div>
+                    <div>8 shares</div>
+                </div>
+                <div class="portfolio-item">
+                    <h3>GOOGL</h3>
+                    <div>Alphabet Inc.</div>
+                    <div class="stock-price">$164.23</div>
+                    <div class="portfolio-change negative">-0.7%</div>
+                    <div>15 shares</div>
+                </div>
+                <div class="portfolio-item">
+                    <h3>AMZN</h3>
+                    <div>Amazon.com Inc.</div>
+                    <div class="stock-price">$192.38</div>
+                    <div class="portfolio-change positive">+2.3%</div>
+                    <div>10 shares</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="chart">Chart</button>
+            <button class="tab-btn" data-tab="news">News</button>
+            <button class="tab-btn" data-tab="watchlist">Watchlist</button>
+        </div>
+
+        <div class="tab-content chart-tab" id="chart-tab">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div>
+                        <h3>AAPL</h3>
+                        <div>Apple Inc.</div>
+                    </div>
+                    <div class="stock-price">$172.43</div>
+                </div>
+                <div class="chart-controls">
+                    <button class="time-btn">1D</button>
+                    <button class="time-btn active">1W</button>
+                    <button class="time-btn">1M</button>
+                    <button class="time-btn">3M</button>
+                    <button class="time-btn">1Y</button>
+                </div>
+                <canvas id="stockChart" width="100%" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="tab-content news-tab" id="news-tab" style="display: none;">
+            <div class="news-section">
+                <div class="news-item">
+                    <div class="news-source">
+                        <strong>Bloomberg</strong> • Markets
+                    </div>
+                    <h3 class="news-title">Tech Stocks Rally as Inflation Worries Ease</h3>
+                    <div class="news-snippet">Technology stocks surged today as new economic data suggested inflation pressures may be starting to ease...</div>
+                    <div class="news-time">2 hours ago</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-source">
+                        <strong>CNBC</strong> • Technology
+                    </div>
+                    <h3 class="news-title">Apple Announces New AI Features for iPhone</h3>
+                    <div class="news-snippet">Apple revealed its latest AI-powered features for the next iOS update, sending shares up 3% in afternoon trading...</div>
+                    <div class="news-time">4 hours ago</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-source">
+                        <strong>Wall Street Journal</strong> • Finance
+                    </div>
+                    <h3 class="news-title">Fed Signals Potential Rate Cut in Coming Months</h3>
+                    <div class="news-snippet">Federal Reserve minutes suggest the central bank may be preparing to ease its monetary policy stance...</div>
+                    <div class="news-time">6 hours ago</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-source">
+                        <strong>Reuters</strong> • Business
+                    </div>
+                    <h3 class="news-title">Microsoft Expands Cloud Partnership with Oracle</h3>
+                    <div class="news-snippet">Microsoft and Oracle announced an expanded partnership to better integrate their cloud services for enterprise customers...</div>
+                    <div class="news-time">8 hours ago</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content watchlist-tab" id="watchlist-tab" style="display: none;">
+            <div class="portfolio-swiper" style="flex-direction: column;">
+                <div class="portfolio-item" style="width: 100%; margin-bottom: 10px;">
+                    <h3>TSLA</h3>
+                    <div>Tesla, Inc.</div>
+                    <div class="stock-price">$247.87</div>
+                    <div class="portfolio-change negative">-2.3%</div>
+                </div>
+                <div class="portfolio-item" style="width: 100%; margin-bottom: 10px;">
+                    <h3>NVDA</h3>
+                    <div>NVIDIA Corporation</div>
+                    <div class="stock-price">$107.89</div>
+                    <div class="portfolio-change positive">+3.8%</div>
+                </div>
+                <div class="portfolio-item" style="width: 100%; margin-bottom: 10px;">
+                    <h3>META</h3>
+                    <div>Meta Platforms, Inc.</div>
+                    <div class="stock-price">$487.52</div>
+                    <div class="portfolio-change positive">+1.2%</div>
+                </div>
+                <div class="portfolio-item" style="width: 100%; margin-bottom: 10px;">
+                    <h3>AMD</h3>
+                    <div>Advanced Micro Devices, Inc.</div>
+                    <div class="stock-price">$157.62</div>
+                    <div class="portfolio-change negative">-0.5%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="trade-btn">TRADE</button>
+
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <div class="nav-icon">📊</div>
+            <div>Home</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon">📈</div>
+            <div>Markets</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon">🔍</div>
+            <div>Search</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div>Account</div>
+        </a>
+    </div>
+
+    <div class="trade-modal" id="tradeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Place Order</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form class="trade-form">
+                <div class="form-group">
+                    <label class="form-label">Symbol</label>
+                    <input type="text" class="form-input" placeholder="Enter stock symbol" id="stockSymbol">
+                </div>
+                <div class="trade-type">
+                    <button type="button" class="type-btn active" data-type="buy">Buy</button>
+                    <button type="button" class="type-btn" data-type="sell">Sell</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" class="form-input" placeholder="Enter quantity" min="1" id="stockQuantity">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Order Type</label>
+                    <select class="form-select" id="orderType">
+                        <option value="market">Market Order</option>
+                        <option value="limit">Limit Order</option>
+                        <option value="stop">Stop Order</option>
+                    </select>
+                </div>
+                <div class="form-group" id="limitPriceGroup" style="display: none;">
+                    <label class="form-label">Limit Price</label>
+                    <input type="number" class="form-input" placeholder="Enter limit price" step="0.01" id="limitPrice">
+                </div>
+                <button type="button" class="submit-trade">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert" id="alertBox">
+        Order placed successfully!
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // Tab Navigation
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+                
+                // Update active tab button
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Show active tab content
+                tabContents.forEach(content => {
+                    if (content.id === `${tabName}-tab`) {
+                        content.style.display = 'block';
+                    } else {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Trade Modal
+        const tradeBtn = document.querySelector('.trade-btn');
+        const tradeModal = document.querySelector('#tradeModal');
+        const closeModal = document.querySelector('.close-modal');
+        const typeButtons = document.querySelectorAll('.type-btn');
+        const orderTypeSelect = document.querySelector('#orderType');
+        const limitPriceGroup = document.querySelector('#limitPriceGroup');
+        const submitTradeBtn = document.querySelector('.submit-trade');
+        const alertBox = document.querySelector('#alertBox');
+
+        tradeBtn.addEventListener('click', () => {
+            tradeModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            tradeModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside content
+        tradeModal.addEventListener('click', (e) => {
+            if (e.target === tradeModal) {
+                tradeModal.style.display = 'none';
+            }
+        });
+
+        // Trade type buttons (Buy/Sell)
+        typeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                typeButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+
+        // Order type change
+        orderTypeSelect.addEventListener('change', () => {
+            if (orderTypeSelect.value === 'limit' || orderTypeSelect.value === 'stop') {
+                limitPriceGroup.style.display = 'flex';
+            } else {
+                limitPriceGroup.style.display = 'none';
+            }
+        });
+
+        // Submit trade
+        submitTradeBtn.addEventListener('click', () => {
+            // Simple validation
+            const symbol = document.querySelector('#stockSymbol').value;
+            const quantity = document.querySelector('#stockQuantity').value;
+            
+            if (!symbol || !quantity) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Close modal and show success alert
+            tradeModal.style.display = 'none';
+            alertBox.textContent = 'Order placed successfully!';
+            alertBox.style.display = 'block';
+            
+            // Hide alert after 3 seconds
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        });
+
+        // Initialize stock chart
+        const ctx = document.getElementById('stockChart').getContext('2d');
+        
+        // Sample data for 1 week of Apple stock
+        const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'AAPL Stock Price',
+                data: [165.23, 167.45, 169.82, 170.15, 172.43],
+                fill: false,
+                borderColor: '#2563eb',
+                tension: 0.1
+            }]
+        };
+        
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            borderDash: [5, 5]
+                        }
+                    }
+                }
+            }
+        };
+        
+        const stockChart = new Chart(ctx, config);
+
+        // Make portfolio cards swipeable
+        const portfolioSwiper = document.querySelector('.portfolio-swiper');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        portfolioSwiper.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - portfolioSwiper.offsetLeft;
+            scrollLeft = portfolioSwiper.scrollLeft;
+        });
+
+        portfolioSwiper.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+
+        portfolioSwiper.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+
+        portfolioSwiper.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - portfolioSwiper.offsetLeft;
+            const walk = (x - startX) * 2;
+            portfolioSwiper.scrollLeft = scrollLeft - walk;
+        });
+
+        // Touch events for mobile
+        portfolioSwiper.addEventListener('touchstart', (e) => {
+            isDown = true;
+            startX = e.touches[0].pageX - portfolioSwiper.offsetLeft;
+            scrollLeft = portfolioSwiper.scrollLeft;
+        });
+
+        portfolioSwiper.addEventListener('touchend', () => {
+            isDown = false;
+        });
+
+        portfolioSwiper.addEventListener('touchmove', (e) => {
+            if (!isDown) return;
+            const x = e.touches[0].pageX - portfolioSwiper.offsetLeft;
+            const walk = (x - startX) * 2;
+            portfolioSwiper.scrollLeft = scrollLeft - walk;
+        });
+
+        // Simulate API data refresh
+        function fetchMarketData() {
+            // In a real app, this would fetch data from an API
+            console.log("Fetching latest market data...");
+            
+            // Simulate price updates
+            setTimeout(() => {
+                // Random price changes
+                const portfolioItems = document.querySelectorAll('.portfolio-item');
+                portfolioItems.forEach(item => {
+                    const priceElement = item.querySelector('.stock-price');
+                    const changeElement = item.querySelector('.portfolio-change');
+                    
+                    if (priceElement && changeElement) {
+                        const currentPrice = parseFloat(priceElement.textContent.replace('$', ''));
+                        const changePercent = (Math.random() * 2 - 1) * 1.5; // Random between -1.5% and +1.5%
+                        const newPrice = currentPrice * (1 + changePercent/100);
+                        
+                        priceElement.textContent = `$${newPrice.toFixed(2)}`;
+                        
+                        if (changePercent >= 0) {
+                            changeElement.textContent = `+${changePercent.toFixed(1)}%`;
+                            changeElement.classList.remove('negative');
+                            changeElement.classList.add('positive');
+                        } else {
+                            changeElement.textContent = `${changePercent.toFixed(1)}%`;
+                            changeElement.classList.remove('positive');
+                            changeElement.classList.add('negative');
+                        }
+                    }
+                });
+            }, 5000);
+        }
+
+        // Initialize data fetching
+        fetchMarketData();
+        // Schedule regular updates
+        setInterval(fetchMarketData, 30000); // Update every 30 seconds
+        
+        // Time interval button controls for chart
+        const timeButtons = document.querySelectorAll('.time-btn');
+        timeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                timeButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // This would normally update the chart with new data based on the time interval
+                const interval = button.textContent;
+                updateChartData(interval);
+            });
+        });
+        
+        function updateChartData(interval) {
+            // In a real app, this would fetch new data based on the interval
+            console.log(`Updating chart with ${interval} data...`);
+            
+            // Sample data for different time intervals
+            let newData = [];
+            let newLabels = [];
+            
+            switch(interval) {
+                case '1D':
+                    newLabels = ['9:30', '11:00', '12:30', '14:00', '16:00'];
+                    newData = [172.10, 172.35, 171.89, 172.15, 172.43];
+                    break;
+                case '1W':
+                    newLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                    newData = [165.23, 167.45, 169.82, 170.15, 172.43];
+                    break;
+                case '1M':
+                    newLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                    newData = [160.45, 163.78, 168.92, 172.43];
+                    break;
+                case '3M':
+                    newLabels = ['Jan', 'Feb', 'Mar', 'Apr'];
+                    newData = [158.12, 162.57, 167.83, 172.43];
+                    break;
+                case '1Y':
+                    newLabels = ['Apr', 'Jul', 'Oct', 'Jan', 'Apr'];
+                    newData = [142.56, 149.23, 158.47, 165.32, 172.43];
+                    break;
+                default:
+                    newLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                    newData = [165.23, 167.45, 169.82, 170.15, 172.43];
+            }
+            
+            // Update chart data
+            stockChart.data.labels = newLabels;
+            stockChart.data.datasets[0].data
